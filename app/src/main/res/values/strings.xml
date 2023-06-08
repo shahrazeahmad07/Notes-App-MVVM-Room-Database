@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Notes App MVVM Room Database</string>
+    <string name="time_stamp">Time Stamp: </string>
+    <string name="add_icon">Add Icon</string>
 </resources>
