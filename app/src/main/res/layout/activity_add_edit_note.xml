@@ -6,4 +6,51 @@
     android:layout_height="match_parent"
     tools:context=".AddEditNoteActivity">
 
+    <EditText
+        android:id="@+id/etNoteTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autofillHints="none"
+        android:background="@android:color/transparent"
+        android:hint="@string/title"
+        android:inputType="textMultiLine|textImeMultiLine"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="23dp"
+        android:paddingBottom="9dp"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/etNoteContent"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:autofillHints="none"
+        android:background="@android:color/transparent"
+        android:gravity="start|top"
+        android:hint="@string/note"
+        android:inputType="textMultiLine|textImeMultiLine"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="0dp"
+        android:paddingBottom="20dp"
+        android:singleLine="false"
+        app:layout_constraintBottom_toTopOf="@+id/btnSaveNote"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etNoteTitle" />
+
+    <Button
+        android:id="@+id/btnSaveNote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/save"
+        android:textAllCaps="false"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="15dp"/>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
