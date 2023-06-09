@@ -11,7 +11,7 @@ import com.example.notesappmvvmroomdatabase.model.Notes
 
 @Dao
 interface NotesDao {
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert
     suspend fun insert(note: Notes)
 
     @Update

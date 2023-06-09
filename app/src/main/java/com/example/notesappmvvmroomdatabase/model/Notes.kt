@@ -5,14 +5,10 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName="notes-table")
-class Notes (
-    @ColumnInfo(name = "title")
-    var noteTitle: String = "",
-    @ColumnInfo(name = "Description")
-    var noteDescription: String = "",
-    @ColumnInfo(name = "timeStamp")
-    var noteTimeStamp: String = ""
-    ) {
+data class Notes(
     @PrimaryKey(autoGenerate = true)
-    var id = 0
-}
+    val id: Int = 0,
+    val noteTitle: String = "",
+    val noteContent: String = "",
+    val noteTimeStamp: String = ""
+)

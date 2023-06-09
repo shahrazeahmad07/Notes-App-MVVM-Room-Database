@@ -14,15 +14,19 @@ import com.example.notesappmvvmroomdatabase.view_model.NotesViewModel
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
+    private var binding: ActivityMainBinding? = null
     private lateinit var notesRvAdapter: NotesRvAdapter
     private lateinit var notesViewModel: NotesViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding?.root)
 
-        binding.rvNotes.layoutManager = LinearLayoutManager(this)
+        // Setting Recycler View:
+        binding?.rvNotes?.layoutManager = LinearLayoutManager(this)
+
+        //! setting View Model and creating adapter
         notesViewModel = ViewModelProvider(
             this,
             ViewModelProvider.AndroidViewModelFactory.getInstance(application)
@@ -37,6 +41,10 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
+        binding?.floatingActionButton?.setOnClickListener {
+            val intent = Intent(this@MainActivity, AddEditNoteActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun onNoteClick(note: Notes) {
@@ -47,5 +55,12 @@ class MainActivity : AppCompatActivity() {
     private fun onDeleteNoteClick(note: Notes) {
         notesViewModel.deleteNote(note)
         Toast.makeText(this@MainActivity, "Note Deleted!!!", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (binding != null) {
+            binding = null
+        }
     }
 }
