@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -35,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         notesRvAdapter = NotesRvAdapter({ note ->
             onNoteClick(note)
         }, { note ->
-            onDeleteNoteClick(note)
+            showDeleteDialog(note)
         })
         binding?.rvNotes?.adapter = notesRvAdapter
 
@@ -77,9 +78,25 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun onDeleteNoteClick(note: Notes) {
-        notesViewModel.deleteNote(note)
-        Toast.makeText(this@MainActivity, "Note Deleted!!!", Toast.LENGTH_SHORT).show()
+//    private fun onDeleteNoteClick(note: Notes) {
+//        notesViewModel.deleteNote(note)
+//        Toast.makeText(this@MainActivity, "Note Deleted!!!", Toast.LENGTH_SHORT).show()
+//    }
+
+    private fun showDeleteDialog(note: Notes) {
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+        builder.setTitle("Delete")
+        val noteTitle = note.noteTitle
+        builder.setMessage("Are you sure you want to delete: $noteTitle")
+        builder.setPositiveButton("yes") { _, _ ->
+            notesViewModel.deleteNote(note)
+            Toast.makeText(this@MainActivity, "Note Deleted!!!", Toast.LENGTH_SHORT).show()
+        }
+        builder.setNegativeButton("Cancel") {
+            dialog, _ ->
+            dialog.dismiss()
+        }
+        builder.show()
     }
 
     override fun onDestroy() {
