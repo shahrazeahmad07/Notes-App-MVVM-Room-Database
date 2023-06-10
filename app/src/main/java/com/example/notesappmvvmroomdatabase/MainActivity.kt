@@ -27,6 +27,9 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding?.root)
 
+        //! setting action bar title
+        supportActionBar?.title = "Your Notes"
+
         // Setting Recycler View:
         binding?.rvNotes?.layoutManager = LinearLayoutManager(this)
         notesRvAdapter = NotesRvAdapter({ note ->
@@ -42,6 +45,7 @@ class MainActivity : AppCompatActivity() {
             ViewModelProvider.AndroidViewModelFactory.getInstance(application)
         )[NotesViewModel::class.java]
 
+        //! saving notes
         notesViewModel.retrieveNotes.observe(this) { list ->
             if (list.isEmpty()) {
                 binding?.rvNotes?.visibility = View.GONE
@@ -58,12 +62,18 @@ class MainActivity : AppCompatActivity() {
 
         binding?.floatingActionButton?.setOnClickListener {
             val intent = Intent(this@MainActivity, AddEditNoteActivity::class.java)
+            intent.putExtra("noteType", "New")
             startActivity(intent)
         }
     }
 
     private fun onNoteClick(note: Notes) {
         val intent = Intent(this, AddEditNoteActivity::class.java)
+        intent.putExtra("noteType", "Edit")
+        intent.putExtra("noteTitle", note.noteTitle)
+        intent.putExtra("noteContent", note.noteContent)
+        intent.putExtra("noteTimeStamp", note.noteTimeStamp)
+        intent.putExtra("noteId", note.id)
         startActivity(intent)
     }
 
