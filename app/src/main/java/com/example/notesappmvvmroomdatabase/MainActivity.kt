@@ -3,14 +3,18 @@ package com.example.notesappmvvmroomdatabase
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.notesappmvvmroomdatabase.adapter.NotesRvAdapter
+import com.example.notesappmvvmroomdatabase.dao.NotesDao
 import com.example.notesappmvvmroomdatabase.databinding.ActivityMainBinding
 import com.example.notesappmvvmroomdatabase.model.Notes
+import com.example.notesappmvvmroomdatabase.model.NotesApp
 import com.example.notesappmvvmroomdatabase.view_model.NotesViewModel
+import kotlinx.coroutines.flow.collect
 
 class MainActivity : AppCompatActivity() {
 
@@ -25,21 +29,32 @@ class MainActivity : AppCompatActivity() {
 
         // Setting Recycler View:
         binding?.rvNotes?.layoutManager = LinearLayoutManager(this)
+        notesRvAdapter = NotesRvAdapter({ note ->
+            onNoteClick(note)
+        }, { note ->
+            onDeleteNoteClick(note)
+        })
+        binding?.rvNotes?.adapter = notesRvAdapter
 
         //! setting View Model and creating adapter
         notesViewModel = ViewModelProvider(
             this,
             ViewModelProvider.AndroidViewModelFactory.getInstance(application)
         )[NotesViewModel::class.java]
-        notesViewModel.allNotes.observe(this, Observer { list ->
-            list.let {
-                notesRvAdapter = NotesRvAdapter(ArrayList(it), { note ->
-                    onNoteClick(note)
-                }, { note ->
-                    onDeleteNoteClick(note)
-                })
+
+        notesViewModel.retrieveNotes.observe(this) { list ->
+            if (list.isEmpty()) {
+                binding?.rvNotes?.visibility = View.GONE
+                binding?.tvNoNotes?.visibility = View.VISIBLE
             }
-        })
+            else {
+                binding?.rvNotes?.visibility = View.VISIBLE
+                binding?.tvNoNotes?.visibility = View.GONE
+            }
+            list.let { notesList ->
+                notesRvAdapter.updateList(notesList)
+            }
+        }
 
         binding?.floatingActionButton?.setOnClickListener {
             val intent = Intent(this@MainActivity, AddEditNoteActivity::class.java)

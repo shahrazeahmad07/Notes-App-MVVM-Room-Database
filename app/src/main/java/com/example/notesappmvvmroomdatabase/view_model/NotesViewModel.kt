@@ -8,29 +8,31 @@ import com.example.notesappmvvmroomdatabase.model.Notes
 import com.example.notesappmvvmroomdatabase.model.NotesApp
 import com.example.notesappmvvmroomdatabase.dao.NotesDao
 import com.example.notesappmvvmroomdatabase.repository.NotesRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class NotesViewModel(application: Application) : AndroidViewModel(application) {
 
-    val allNotes: LiveData<List<Notes>>
-    val repository: NotesRepository
-    val notesDao: NotesDao
+    val retrieveNotes: LiveData<List<Notes>>
+    private val repository: NotesRepository
+    private val notesDao: NotesDao
 
     init {
+        // yahan change kya wa hai main ne bus!!
         notesDao = (application as NotesApp).db.notesDao()
         repository = NotesRepository(notesDao)
-        allNotes = repository.allNOtes
+        retrieveNotes = repository.retrieveNotes
     }
 
-    fun addNote(note: Notes) = viewModelScope.launch {
+    fun addNote(note: Notes) = viewModelScope.launch(Dispatchers.IO) {
         repository.insert(note)
     }
 
-    fun updateNote(note:Notes) = viewModelScope.launch {
+    fun updateNote(note:Notes) = viewModelScope.launch(Dispatchers.IO) {
         repository.update(note)
     }
 
-    fun deleteNote(note: Notes) = viewModelScope.launch {
+    fun deleteNote(note: Notes) = viewModelScope.launch(Dispatchers.IO) {
         repository.delete(note)
     }
 }

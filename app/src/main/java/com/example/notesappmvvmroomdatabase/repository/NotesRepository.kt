@@ -6,7 +6,7 @@ import com.example.notesappmvvmroomdatabase.dao.NotesDao
 
 class NotesRepository(private val notesDao: NotesDao) {
 
-    val allNOtes: LiveData<List<Notes>> = notesDao.retrieveAllNotes()
+    val retrieveNotes: LiveData<List<Notes>> = notesDao.retrieveAllNotes()
 
     suspend fun insert(note: Notes) {
         notesDao.insert(note)
