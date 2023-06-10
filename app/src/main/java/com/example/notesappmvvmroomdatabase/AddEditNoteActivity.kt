@@ -31,8 +31,10 @@ class AddEditNoteActivity : AppCompatActivity() {
             ViewModelProvider.AndroidViewModelFactory.getInstance(application)
         )[NotesViewModel::class.java]
 
+        //! getting note type -> New or Edit
         noteType = intent.getStringExtra("noteType")
 
+        //! Setting view according to note type
         if (noteType!! == "Edit") {
             binding?.btnSaveNote?.text = getString(R.string.update)
             binding?.etNoteTitle?.setText(intent.getStringExtra("noteTitle"))
@@ -89,6 +91,7 @@ class AddEditNoteActivity : AppCompatActivity() {
         }
     }
 
+    //! on back pressed
     override fun onBackPressed() {
         super.onBackPressed()
         if (binding?.etNoteTitle?.text!!.isNotEmpty() && binding?.etNoteContent?.text!!.isNotEmpty()) {
@@ -102,6 +105,7 @@ class AddEditNoteActivity : AppCompatActivity() {
         }
     }
 
+    //! on Destroy
     override fun onDestroy() {
         super.onDestroy()
         if (binding != null) {

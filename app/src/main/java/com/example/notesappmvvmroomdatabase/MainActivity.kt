@@ -61,6 +61,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        //! floating Action button
         binding?.floatingActionButton?.setOnClickListener {
             val intent = Intent(this@MainActivity, AddEditNoteActivity::class.java)
             intent.putExtra("noteType", "New")
@@ -68,6 +69,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // on note click
     private fun onNoteClick(note: Notes) {
         val intent = Intent(this, AddEditNoteActivity::class.java)
         intent.putExtra("noteType", "Edit")
@@ -78,11 +80,8 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-//    private fun onDeleteNoteClick(note: Notes) {
-//        notesViewModel.deleteNote(note)
-//        Toast.makeText(this@MainActivity, "Note Deleted!!!", Toast.LENGTH_SHORT).show()
-//    }
 
+    //! on delete button clicked
     private fun showDeleteDialog(note: Notes) {
         val builder: AlertDialog.Builder = AlertDialog.Builder(this)
         builder.setTitle("Delete")
@@ -99,6 +98,7 @@ class MainActivity : AppCompatActivity() {
         builder.show()
     }
 
+    //! on destroy
     override fun onDestroy() {
         super.onDestroy()
         if (binding != null) {
