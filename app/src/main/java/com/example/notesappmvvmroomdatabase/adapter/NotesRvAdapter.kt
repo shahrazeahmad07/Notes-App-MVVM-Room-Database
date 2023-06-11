@@ -11,11 +11,10 @@ import com.example.notesappmvvmroomdatabase.R
 import com.example.notesappmvvmroomdatabase.model.Notes
 
 class NotesRvAdapter(
+    private val allNotesList: ArrayList<Notes>,
     private val noteClickListener: (note: Notes) -> Unit,
     private val deleteNoteListener: (note: Notes) -> Unit
 ) : RecyclerView.Adapter<NotesRvAdapter.ViewHolder>() {
-
-    private val allNotesList: ArrayList<Notes> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.single_note_view, parent, false)
@@ -37,11 +36,11 @@ class NotesRvAdapter(
         }
     }
 
-    fun updateList(newList: List<Notes>) {
-        allNotesList.clear()
-        allNotesList.addAll(newList)
-        notifyDataSetChanged()
-    }
+//    fun updateList(newList: List<Notes>) {
+//        allNotesList.clear()
+//        allNotesList.addAll(newList)
+//        notifyDataSetChanged()
+//    }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvRvTitle: TextView

@@ -33,12 +33,6 @@ class MainActivity : AppCompatActivity() {
 
         // Setting Recycler View:
         binding?.rvNotes?.layoutManager = LinearLayoutManager(this)
-        notesRvAdapter = NotesRvAdapter({ note ->
-            onNoteClick(note)
-        }, { note ->
-            showDeleteDialog(note)
-        })
-        binding?.rvNotes?.adapter = notesRvAdapter
 
         //! setting View Model and creating adapter
         notesViewModel = ViewModelProvider(
@@ -46,18 +40,23 @@ class MainActivity : AppCompatActivity() {
             ViewModelProvider.AndroidViewModelFactory.getInstance(application)
         )[NotesViewModel::class.java]
 
-        //! saving notes
+        //! retrieving notes
         notesViewModel.retrieveNotes.observe(this) { list ->
             if (list.isEmpty()) {
                 binding?.rvNotes?.visibility = View.GONE
                 binding?.tvNoNotes?.visibility = View.VISIBLE
-            }
-            else {
+            } else {
                 binding?.rvNotes?.visibility = View.VISIBLE
                 binding?.tvNoNotes?.visibility = View.GONE
             }
             list.let { notesList ->
-                notesRvAdapter.updateList(notesList)
+                notesRvAdapter = NotesRvAdapter(ArrayList(notesList),
+                    { note ->
+                        onNoteClick(note)
+                    }, { note ->
+                        showDeleteDialog(note)
+                    })
+                binding?.rvNotes?.adapter = notesRvAdapter
             }
         }
 
@@ -91,8 +90,7 @@ class MainActivity : AppCompatActivity() {
             notesViewModel.deleteNote(note)
             Toast.makeText(this@MainActivity, "Note Deleted!!!", Toast.LENGTH_SHORT).show()
         }
-        builder.setNegativeButton("Cancel") {
-            dialog, _ ->
+        builder.setNegativeButton("Cancel") { dialog, _ ->
             dialog.dismiss()
         }
         builder.show()
