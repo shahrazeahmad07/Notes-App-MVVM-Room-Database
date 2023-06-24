@@ -62,7 +62,6 @@ class AddEditNoteActivity : AppCompatActivity() {
             val currentDateAndTime = sdf.format(Date())
             val updatedNote = Notes(id = intent.getIntExtra("noteId", -1), noteTitle = noteTitle, noteContent =  noteContent, noteTimeStamp =  currentDateAndTime)
             notesViewModel.updateNote(updatedNote)
-            Toast.makeText(this, "Note Updated", Toast.LENGTH_SHORT).show()
             finish()
         } else {
             Toast.makeText(this, "Enter all fields!", Toast.LENGTH_SHORT).show()
@@ -84,7 +83,6 @@ class AddEditNoteActivity : AppCompatActivity() {
                     noteTimeStamp = currentDateAndTime
                 )
             )
-            Toast.makeText(this, "Note Saved", Toast.LENGTH_SHORT).show()
             finish()
         } else {
             Toast.makeText(this, "Enter all fields!", Toast.LENGTH_SHORT).show()
